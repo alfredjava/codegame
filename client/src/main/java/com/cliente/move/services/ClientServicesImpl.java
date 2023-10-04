@@ -25,25 +25,26 @@ public class ClientServicesImpl implements ClientServices {
 
     @Override
     public Mono<ClientResponse> createPerson(ClientRequest clientRequest) {
-        return Mono.defer(() -> {
-            PersonEntity personEntity = clientMapper.toEntityPerson(clientRequest);
+        PersonEntity personEntity = clientMapper.toEntityPerson(clientRequest);
 
-            return personRepository.save(personEntity)
-                    .flatMap(personResponse -> {
-                        ClientEntity clientEntity = clientMapper.toEntityClient(personResponse);
-                        log.info("person id: {}", clientEntity.getPersonID());
-                        return clientRepository.save(clientMapper.toEntityClient(personResponse))
-                                .map(clientResponse -> {
-                                    log.info("client id: {}", clientResponse.getClientID());
-                                    return clientMapper.toClientResponse(clientResponse);
-                                });
-                    })
-                    .switchIfEmpty(Mono.error(new CustomException("La inserción en la tabla person falló.")))
-                    .onErrorResume(error -> {
-                        log.error("Error al insertar en la tabla person: {}", error.getMessage());
-                        return Mono.error(error);
-                    });
-        });
+        return personRepository.findByIdentification(personEntity.getIdentification())
+                .flatMap(existingPerson -> {
+                    // Si la persona ya existe
+                    return Mono.error(new CustomException("La persona ya existe."));
+                })
+                .switchIfEmpty(Mono.defer(() -> {
+                    return personRepository.save(personEntity)
+                            .map(savedPerson -> {
+                                // Crear el cliente
+                                ClientEntity clientEntity = clientMapper.toEntityClient(savedPerson);
+                                clientEntity.setPassword(clientRequest.getPassword());
+                                clientEntity.setStatus(true);
+                                return clientEntity;
+                            })
+                            .flatMap(clientRepository::save)
+                            .map(savedClient -> clientMapper.toClientResponse(savedClient));
+                }))
+                .cast(ClientResponse.class);
     }
 
 

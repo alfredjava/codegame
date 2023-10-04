@@ -6,7 +6,22 @@
         <artifactId>move</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>cuenta</artifactId>
+    <artifactId>account</artifactId>
     <name>Archetype - Cuenta</name>
     <url>http://maven.apache.org</url>
+<dependencies>
+
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    <dependency>
+        <groupId>io.asyncer</groupId>
+        <artifactId>r2dbc-mysql</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+</dependencies>
+
+
 </project>

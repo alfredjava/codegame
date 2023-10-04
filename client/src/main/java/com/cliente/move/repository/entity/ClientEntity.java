@@ -15,6 +15,6 @@ public class ClientEntity {
     @Id
     private Long clientID;
     private String password;
-    private String status;
+    private Boolean status;
     private Long personID;
 }

@@ -13,5 +13,19 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  mysql:
+    image: mysql:latest
+    container_name: account_container
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql123  # Contraseña del usuario root
+      MYSQL_DATABASE: account_bd  # Nombre de la base de datos
+      MYSQL_USER: account_user  # Nombre de usuario
+      MYSQL_PASSWORD: mysql123  # Contraseña del usuario
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
 volumes:
   postgres_data:
+  mysql_data:
