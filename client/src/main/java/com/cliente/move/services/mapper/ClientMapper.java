@@ -8,19 +8,17 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
+import reactor.core.publisher.Mono;
 
 @Mapper(componentModel = "spring",unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ClientMapper {
 
-
-
-    @Mapping(target ="name",source = "name")
     PersonEntity toEntityPerson(ClientRequest clientRequest);
 
     ClientEntity toEntityClient(PersonEntity personResponse);
+    ClientResponse toClientResponse(ClientEntity clientEntity);
 
-    ClientResponse toClientResponse(PersonEntity personaEntity);
 }
 
 

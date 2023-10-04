@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: customer_container
+    environment:
+      POSTGRES_DB: customer  # Nombre de la base de datos
+      POSTGRES_USER: customer_user  # Nombre de usuario
+      POSTGRES_PASSWORD: S3cr3t  # Contraseña del usuario
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

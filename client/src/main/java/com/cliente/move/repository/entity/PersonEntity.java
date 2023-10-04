@@ -13,7 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class PersonEntity {
 
     @Id
-    private Long id;
+    private Long personID;
     private String name;
     private String gender;
     private Integer age;

@@ -6,5 +6,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ClientResponse {
-    private Long clientId;
+    private Long personID;
 }

@@ -16,15 +16,15 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/client")
 @RequiredArgsConstructor
-public class ClienteController {
+public class ClientController {
 
 
-    private final ClientServices clienteServices;
+    private final ClientServices clientServices;
+
     @PostMapping
-    public Mono<ResponseEntity<ClientResponse>> createPerson(@RequestBody ClientRequest clientRequest, ServerWebExchange exchange){
-        return clienteServices.createPerson(clientRequest)
-                .doOnSuccess(clientResponse -> exchange.getResponse().setStatusCode(HttpStatus.CREATED))
-                .map(ResponseEntity::ok);
-
+    public Mono<ResponseEntity<ClientResponse>> createPerson(@RequestBody ClientRequest clientRequest) {
+        return clientServices.createPerson(clientRequest)
+                .map(clientResponse -> ResponseEntity.status(HttpStatus.CREATED).body(clientResponse));
     }
+
 }
