@@ -3,7 +3,9 @@ package com.acount.move.services;
 import com.acount.move.model.MoveRequest;
 import com.acount.move.model.MoveResponse;
 import com.acount.move.repository.AccountRepository;
+import com.acount.move.repository.MoveDTO;
 import com.acount.move.repository.MoveRepository;
+import com.acount.move.repository.entity.AccountEntity;
 import com.acount.move.services.mapper.MoveMapper;
 import com.acount.move.util.CustomException;
 import lombok.RequiredArgsConstructor;
@@ -47,9 +49,9 @@ public class MoveServicesImpl implements MoveServices{
                     return moveRepository.save(moveMapper.moveToEntity(moveRequest)
                                     //.withAccountNumber(accountEntity.getAccountNumber())
                                     .withAccountID(accountEntity.getAccountID())
-                                    .withBalance(accountEntity.getInitialBalance())
+                                    //.withBalance(accountEntity.getInitialBalance())
                                     .withDescription(moveRequest.getType() + " " + moveRequest.getAmount()))
-                            .map(moveMapper::moveEntityToMoveResponse)
+                            .map(moveEntity ->moveMapper.moveEntityToMoveResponse(moveEntity,accountEntity))
                             .doOnSuccess(moveRequest1 -> {
                                 accountRepository.save(accountEntity)
                                         .doOnError(throwable -> log.error("Error saving account: {}", throwable.getMessage()))
@@ -59,7 +61,30 @@ public class MoveServicesImpl implements MoveServices{
     }
 
     @Override
-    public Flux<MoveResponse> listMoveByAccount(String accountNumber) {
-        return moveRepository.findByAccountNumber(accountNumber).map(moveMapper::moveEntityToMoveResponse);
+    public Flux<MoveResponse> listMoveByAccountID(String accountID) {
+        return null;
     }
+
+    @Override
+    public Flux<MoveResponse> listMoveAll() {
+        return null;
+    }
+
+    @Override
+    public Flux<MoveResponse> listMoveByAccountNumber(String accountNumber) {
+        return moveRepository.findByAccountNumber(accountNumber)
+                .map(result -> {
+                    MoveDTO dto = MoveDTO.builder().moveID(result.getMoveID())
+                            .moveDate(result.getMoveDate())
+                            .moveType(result.getMoveType())
+                            .amount(result.getAmount())
+                            .description(result.getDescription())
+                            .accountID(result.getAccountID())
+                            .accountNumber(result.getAccountNumber())
+                            .build();
+                    return dto;
+                }).map(moveDTO -> moveMapper.moveDTOToMoveResponse(moveDTO));
+    }
+
+
 }

@@ -1,24 +1,17 @@
-package com.acount.move.repository.entity;
+package com.acount.move.repository;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.With;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Persistent;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Table;
-
 
 import java.time.LocalDateTime;
 
-@Table(value = "move")
-@Getter
-@Setter
 @Builder
-public class MoveEntity  {
-
+@Setter
+@Getter
+public class MoveDTO {
     @Id
     private Long moveID;
     private LocalDateTime moveDate;
@@ -28,6 +21,6 @@ public class MoveEntity  {
     private String description;
     @With
     private Long accountID;
-
-
+    private String accountNumber;
+    private Double balance;
 }

@@ -28,11 +28,16 @@ public class MoveController {
     }
 
     // create getmapping for listMoveByAccount
-    @GetMapping("/{accountNumber}")
-    public Flux<ResponseEntity<MoveResponse>> listMoveByAccount(@PathVariable String accountNumber) {
-        return moveServices.listMoveByAccount(accountNumber)
+    @GetMapping("/{accounNumber}")
+    public Flux<ResponseEntity<MoveResponse>> listMoveByAccount(@PathVariable String accounNumber) {
+        return moveServices.listMoveByAccountNumber(accounNumber)
                 .map(moveResponse -> ResponseEntity.status(HttpStatus.OK).body(moveResponse))
                 .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.NO_CONTENT).body(MoveResponse.builder().build())));
+    }
+
+    @GetMapping
+    public Flux<MoveResponse> listMoveAll() {
+        return moveServices.listMoveAll();
     }
 
 
