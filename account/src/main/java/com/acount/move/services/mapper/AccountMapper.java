@@ -25,5 +25,7 @@ public interface AccountMapper {
     }
     @Mapping(target ="accountID",source = "accountID")
     @Mapping(target ="accountNumber",source = "accountNumber")
+    @Mapping(target ="status",source = "status")
+    @Mapping(target ="balance",source = "initialBalance")
     AccountResponse accountEntityToAccountResponse(AccountEntity accountEntity);
 }

@@ -7,10 +7,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -26,5 +24,22 @@ public class AccountController {
                 .map(accountResponse -> ResponseEntity.status(HttpStatus.CREATED).body(accountResponse));
     }
 
+    @PutMapping("/{accountNumber}")
+    public Mono<ResponseEntity<AccountResponse>> inactivateAccount(@PathVariable String accountNumber) {
+        return accountServices.inactivateAccount(accountNumber)
+                .map(accountResponse -> ResponseEntity.status(HttpStatus.OK).body(accountResponse));
+    }
 
+    @GetMapping
+    public Flux<AccountResponse> listAccount() {
+        return accountServices.listAccount();
+    }
+
+
+    @GetMapping("/{accountNumber}")
+    public Mono<ResponseEntity<AccountResponse>> getAccount(@PathVariable String accountNumber) {
+        return accountServices.getAccount(accountNumber)
+                .map(accountResponse -> ResponseEntity.status(HttpStatus.OK).body(accountResponse))
+                .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.NO_CONTENT).body(AccountResponse.builder().build())));
+    }
 }

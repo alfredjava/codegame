@@ -45,4 +45,13 @@ public class ValidationExceptionHandler {
 
         return new ResponseEntity<>(result, HttpStatus.CONFLICT); // Código de estado 409 Conflict
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("error", "Error servidor");
+        result.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(result, HttpStatus.CONFLICT); // Código de estado 409 Conflict
+    }
 }

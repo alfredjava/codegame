@@ -3,6 +3,7 @@ package com.acount.move.repository.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.With;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -16,6 +17,7 @@ public class AccountEntity {
         private String accountNumber;
         private String accountType;
         private Double initialBalance;
+        @With
         private Boolean status;
         private Long clientID;
 }

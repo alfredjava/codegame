@@ -9,10 +9,10 @@ CREATE TABLE IF NOT EXISTS account (
 
 CREATE TABLE IF NOT EXISTS move (
                                     move_id INT AUTO_INCREMENT PRIMARY KEY,
-                                    date DATETIME NOT NULL,
+                                    move_date DATETIME NOT NULL,
                                     move_type VARCHAR(200) NOT NULL,
                                     amount DECIMAL(10,2) NOT NULL,
-                                    balance DECIMAL(10,2) NOT NULL,
+                                    description VARCHAR(200) NOT NULL,
                                     account_id INT NOT NULL,
                                     FOREIGN KEY (account_id) REFERENCES account(account_id)
 );
