@@ -6,7 +6,7 @@ git clone https://github.com/alfredjava/codegame.git
 
 ```bash 
 ## Ejecutar dentro de la carpeta codegame
-git clean install
+mvn clean install
 ```
 ## Ejecutar dentro de la carpeta codegame
 ```bash
