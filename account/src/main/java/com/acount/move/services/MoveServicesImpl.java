@@ -67,23 +67,14 @@ public class MoveServicesImpl implements MoveServices{
 
     @Override
     public Flux<MoveResponse> listMoveAll() {
-        return null;
+        return moveRepository.findAllMoves().map(moveDTO -> moveMapper.moveDTOToMoveResponse(moveDTO));
     }
 
     @Override
     public Flux<MoveResponse> listMoveByAccountNumber(String accountNumber) {
         return moveRepository.findByAccountNumber(accountNumber)
-                .map(result -> {
-                    MoveDTO dto = MoveDTO.builder().moveID(result.getMoveID())
-                            .moveDate(result.getMoveDate())
-                            .moveType(result.getMoveType())
-                            .amount(result.getAmount())
-                            .description(result.getDescription())
-                            .accountID(result.getAccountID())
-                            .accountNumber(result.getAccountNumber())
-                            .build();
-                    return dto;
-                }).map(moveDTO -> moveMapper.moveDTOToMoveResponse(moveDTO));
+                .switchIfEmpty(Mono.error(new CustomException("Account not found"))).
+         map(moveDTO -> moveMapper.moveDTOToMoveResponse(moveDTO));
     }
 
 

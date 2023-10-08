@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Mapper(componentModel = "spring",unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -31,6 +32,9 @@ public interface MoveMapper {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return localDateTime.format(formatter);
     }
-
+    @Mapping(target ="balance",source = "initialBalance")
+    @Mapping(target ="type",source = "moveType")
+    @Mapping(target ="date",source = "moveDate")
     MoveResponse moveDTOToMoveResponse(MoveDTO moveDTO);
+
 }

@@ -1,9 +1,6 @@
 package com.acount.move.repository;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.With;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
@@ -11,8 +8,8 @@ import java.time.LocalDateTime;
 @Builder
 @Setter
 @Getter
+@AllArgsConstructor
 public class MoveDTO {
-    @Id
     private Long moveID;
     private LocalDateTime moveDate;
     private String moveType;
@@ -22,5 +19,5 @@ public class MoveDTO {
     @With
     private Long accountID;
     private String accountNumber;
-    private Double balance;
+    private Double initialBalance;
 }
